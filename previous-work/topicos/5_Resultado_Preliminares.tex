@@ -1,0 +1,114 @@
+Os resultados parciais foram obtidos a partir da avaliação da capacidade dos modelos em responder às questões extraídas do livro Gado de Leite \cite{embrapa2012gadoleite}. Para aumentar a precisão das respostas geradas, aplicou-se um aprimoramento de prompting na configuração Zero-shot. Em seguida, as respostas foram avaliadas segundo as métricas propostas, resultando nos valores apresentados a seguir.
+
+
+
+Inicialmente, realizou-se uma análise comparativa entre diferentes modelos da família Llama para avaliar variações em seus desempenhos e identificar possíveis ganhos em versões otimizadas. Os modelos avaliados incluíram o Llama-3-8B, Llama-3.1-8B-Instant, Llama-3-70B e Llama-3.3-70B-Versatile. Os resultados das métricas obtidas estão consolidados na Tabela \ref{tab:metricas_modelos_llama}.
+
+
+\begin{table}[h]
+\centering
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Modelos} & \textbf{BERTSCORE} & \textbf{BARTSCORE} & \textbf{GPTSCORE} & \textbf{BLEU} & \textbf{ROUGE-1} \\
+\midrule
+
+LLAMA-3-8b             & 0.70 (0.03) &  -3.32 (0.38) & -1.34 (0.16) &0.26 (0,08)  & 0.27 (0.09) \\
+
+LLAMA-3.1-8b-instant   & 0.70 (0.03) & -3.31 (0.40) & -1.45 (0.15)& 0.26 (0.08) & 0.27 (0.09) \\
+
+LLAMA3-70b             & 0.70 (0.03) & - 3.28 (0.38) & -0.94 (2.22) & 
+0.27 (0.08) &  0.29 (0.10) \\
+
+LLAMA-3.3-70b-versatile   & 0.70 (0.03) & -3.23 (0.37) & -1.05 (2.30) & 0.27 (0.08) & 0.27 (0.10) \\
+
+\bottomrule
+\end{tabular}%
+}
+\caption{Comparação de métricas entre modelos LLAMA}
+\label{tab:metricas_modelos_llama}
+\end{table}
+
+A partir da análise dos dados, observa-se que o Llama-3-8B e sua variante Instant (caracterizada pela janela de contexto ampliada de 128K) apresentaram desempenhos estatisticamente equivalentes na tarefa de resposta a perguntas em regime zero-shot. Nota-se que, nas cinco métricas propostas, os resultados mantiveram-se consistentes, com divergências mínimas apenas no GPTScore. Padrão semelhante foi observado na comparação entre o Llama-3-70B e o Llama-3-3-70B-Versatile, onde as métricas de casamento de padrões e similaridade semântica não indicaram superioridade expressiva de um modelo sobre o outro.
+
+Diante da ausência de ganhos significativos nas versões variantes para o escopo desta tarefa, optou-se por prosseguir com as avaliações utilizando os modelos base, garantindo maior estabilidade e comparabilidade nas etapas subsequentes do trabalho.
+
+
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Modelos} & \textbf{BERTSCORE} & \textbf{BARTSCORE} & \textbf{GPTSCORE} & \textbf{BLEU} & \textbf{ROUGE-1} \\
+\midrule
+GPT-3.5 Turbo             & 0.70 (0.05) & -3.22 (0.35) & -0.66 (2.06) & 0.28 (0.12) & 0.30 (0.16) \\
+GPT-4                     & 0.71 (0.04) & -3.21 (0.42) & -0.96 (2.28) & 0.30 (0.09) &  0.33 (0.09) \\
+
+
+LLAMA-3.1-8b      & 0.70 (0.03) & -3.31 (0.40) & -1.34 (0.16) & 0.26 (0.08) & 0.27 (0.09) \\
+LLAMA-3.1-70b   & 0.70 (0.03) & -3.23 (0.37) & -1.05 (2.30) & 0.27 (0.08) & 0.27 (0.10) \\
+
+LIGHT RAG + LLAMA 3.1-8b & 0.66 (0.08) & - 3.44 (0.42) & -1.37 (0.24) & 0.09 (0.13) & 0.24 (0.10) \\
+LIGHT RAG + GPT-OSS:20b & 0.69 (0.07) & -3.52 (0.42) & --- & 0.22 (0.09) & 0.26 (0.09) \\
+
+
+G-RAG + LLAMA 3.1-8b & 0.65 (0.06) & -3.59 (0.41) & -1.58 (0.17) & 0.09 (0.11)  & 0.26 (0.09) \\
+G-RAG + GPT-OSS:20b & 0.64 (0.12) & -3.61 (0.65) & -1.50 (0.24) & 0.0009 (0.11) & 0.19 (0.09) \\
+G-RAG + GPT-4 & 0.64 (0.06) & -3.57 (0.57) & -1.36 (0.14) &  0.04 (0.11) & 0.11 (0.09)\\
+\bottomrule
+\end{tabular}%
+}
+\caption{Comparação de métricas entre modelos Base}
+\label{tab:metricas_modelos}
+\end{table}
+
+Dado os resultados apresentados na Tabela \ref{tab:metricas_modelos}, o modelo GPT-4 obteve desempenho superior aos demais nas métricas de avaliação de similaridade semântica. No BERTScore, alcançou pontuação média de 0.71, enquanto no BARTScore apresentou valor de -3.21, evidenciando maior proximidade semântica com o texto de referência (uma vez que valores menos negativos indicam maior similaridade). Esses resultados mostram que o GPT-4 foi consistente em gerar respostas semanticamente próximas aos textos de referência analisados. 
+
+Entretanto, ao considerar a métrica GPTScore — que avalia a coerência semântica da resposta em relação à tarefa e ao aspecto de avaliação definido —, o GPT-4 apresentou desempenho inferior aos demais modelos. Isso indica que, embora suas respostas sejam semanticamente similares, não se alinharam de forma satisfatória ao critério de correção factual adotado. Diferentemente de métricas como BERTScore e BARTScore, que medem apenas similaridade semântica entre textos, o GPTScore se baseia na aderência factual às respostas de referência, revelando limitações do GPT-4 nesse aspecto específico.
+
+Nas métricas de similaridade léxica, o GPT-4 também se destacou: obteve 0.30 no BLEU e 0.33 no ROUGE-1. Apesar de os valores absolutos serem baixos, o modelo superou os demais, evidenciando maior sobreposição léxica entre a resposta gerada e o texto de referência, o que indica melhor desempenho relativo na tarefa.
+
+Ainda assim, observa-se que os valores obtidos permanecem relativamente baixos. Isso demonstra que, na problemática proposta — avaliar se as respostas geradas mantêm o mesmo teor informativo da referência —, há espaço significativo para aprimoramento, reforçando a necessidade de adaptação por meio de técnicas como RAG.
+
+\section{Exemplos}
+
+Nesta seção são apresentadas algumas perguntas acompanhadas de suas respectivas respostas de referência, em comparação com as respostas geradas pelo modelo, conforme ilustrado na Tabela \ref{tab:exemplo_respostas}.
+
+\begin{table}[H]
+    \centering
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{p{3.5cm}|p{5cm}|p{5cm}}
+             \textbf{Pergunta} & \textbf{Resposta de Referência} & \textbf{Resposta Gerada} \\
+             \midrule
+             É aconselhável ordenhar as vacas antes do parto? & Não. Porque o bezerro precisa mamar a maior quantidade possível de colostro logo após o nascimento, a fim de garantir a ingestão de quantidade suficiente de imunoglobulinas. & Excelente pergunta! Como zootecnista especialista em gado leiteiro, posso afirmar que ordenhar antes do parto, popularmente conhecido como "ordenha seca", é uma prática comum e recomendada em muitas fazendas leiteiras. \\
+            \midrule
+            É preciso tostar os grãos de soja antes de fornecê-los às vacas em lactação? & Não necessariamente. A tostagem da soja apresenta a vantagem de eliminar alguns fatores antinutricionais presentes no grão cru, como inibidores de proteases, ácido fítico e urease. & Sim, é recomendado tostar os grãos de soja antes de fornecê-los às vacas em lactação. O processo de tostagem ajuda a melhorar a digestibilidade e a disponibilidade de proteína da soja para os ruminantes. \\
+            \midrule
+            Deve-se experimentar vários touros em uma vaca que não pega cria? & Não. A melhor conduta é realizar um exame ginecológico minucioso da vaca. Além disso, se for portadora de alguma doença do aparelho reprodutivo, a vaca pode contaminar todos os touros que a cobrirem. & Sim, é uma prática comum em reprodução animal tentar diferentes touros em uma vaca que não pega cria, para identificar se o problema está relacionado à capacidade reprodutiva da vaca ou do touro.
+        \end{tabular}
+    }
+    \caption{Exemplos de perguntas e respostas de referência em comparação com as respostas geradas pelo modelo.}
+    \label{tab:exemplo_respostas}
+\end{table}
+
+A análise dos exemplos evidencia divergências críticas. No primeiro caso, o modelo recomenda a ordenha antes do parto, desconsiderando a importância do colostro para a imunidade do bezerro. No segundo, sugere categoricamente a tostagem da soja, embora essa prática não seja obrigatória. No terceiro, indica experimentar vários touros em uma vaca que não pega cria, enquanto a referência recomenda inicialmente um exame ginecológico.  
+
+Essas diferenças demonstram que os modelos podem gerar respostas com aparência de autoridade, mas tecnicamente incorretas ou imprecisas, reforçando a necessidade de ajustes e adaptações para uso confiável no setor leiteiro.
+
+
+
+\section{Aplicação do RAG}
+
+\subsection{Light RAG}
+
+
+\subsection{G-LIVE-RAG}
+\subsubsection{V1 (Aprimoramento por Documentos)}
+
+
+\subsubsection{V2 - Aprimoramento por Prompt (\textit{ZeroShot} + Documento)}
+\subsubsection{V3 - Expansão por Prompt Personalizado + Base de Documentos}
+
+

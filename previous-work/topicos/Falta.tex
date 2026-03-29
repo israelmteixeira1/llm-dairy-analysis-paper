@@ -1,0 +1,35 @@
+\textbf{RAG}
+
+
+O RAG é uma tecnica de fazer aprimoramento de modelos já pré-treinados através de um banco de dados externos como uma base de busca externa ao modelo. Essa tecnica é difundida pela comunidade academica, mostrando resultados
+
+
+RAG (Retrieval Augmented Retrieval) é uma técnica amplamente utilizada de LLMs em busca de aprimorar e lapidar as respostas dos LLMs com base em um contexto. Essa técnica consiste em produzir uma base de conhecimento (banco de dados) externa ao modelo, possibilitando manter o modelo com conhecimentos atualizados, sem a necessidade de treinar o modelo novamente.  
+No contexto do nosso trabalho, com os dados coletados do PUBMed, foi priorizado a coleta dos artigos da principal revista sobre a produção leiteira encontrada, "\textit{Journal of Dairy Science}", onde se concentranm conhecimentos de como realizar a alimentação, cuidade e manejo das vacas destinadas a produção leiteira.  A base de dados external, consiste em aproximadamente 10.000 artigos.
+
+
+O RAG recebeu cada arquivo separadamente fazendo divisão dos artigos em "\textit{chunks}" (pedaços), realizando uma ánalise semântica de cada palavra existente no texto, e criando uma vector database, que consiste de gerar um vetor de embeddings, o qual auxialaram no cruzamento de dados ao analisar o prompt do usuário e os dados externos, porque através dessa vector database será possivel pegar palavras chaves da pergunta do usuário e cruzar com um artigo que apresente a melhor combinação para responder esse prompt. Desse modo, retornando perguntas mais bem formentada e com um artigo que ajude na veracidade da informação e artigos quem podem ser lidos pelo usuário.
+
+
+=========
+
+
+\begin{table}[h!]
+\centering
+\caption{Comparação de métricas entre modelos}
+\label{tab:metricas_modelos}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Modelos} & \textbf{BERTSCORE} & \textbf{BARTSCORE} & \textbf{GPTSCORE} & \textbf{BLEU} & \textbf{ROUGE-1} \\
+\midrule
+GPT-3.5 Turbo             & 0.70 (0.05) & -3.22 (0.35) & -0.66 (2.06) & 0.28 (0.12) & 0.30 (0.16) \\
+GPT-4                     & 0.71 (0.04) & -3.21 (0.42) & -0.96 (2.28) & 0.30 (0.09) &  0.33 (0.09) \\
+LLAMA-3.1-8b-instant      & 0.70 (0.03) & -3.31 (0.40) & -0.86 (2.36) & 0.26 (0.08) & 0.27 (0.09) \\
+LLAMA-3.3-70b-versatile   & 0.70 (0.03) & -3.23 (0.37) & -1.05 (2.30) & 0.27 (0.08) & 0.27 (0.10) \\
+LLAMA-3-8b-8192           & 0.70 (0.03) & -3.32 (0.38) & -0.96 (2.34) & 0.26 (0.08) & 0.27 (0.09) \\
+LLAMA-3-70b-8192          & 0.70 (0.03) & -3.28 (0.38) & -0.94 (2.22) &  0.27 (0.08) & 0.29 (0.10) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

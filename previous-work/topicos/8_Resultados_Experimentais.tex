@@ -1,0 +1,239 @@
+
+
+
+Os resultados obtidos a partir da avaliação da capacidade dos modelos em responder ás questões extraidas do livro " 500 Perguntas 500 Respostas - Gado de Leite " \cite{embrapa2012gadoleite}. Para aumentar a precisão das respostas geradas, aplicou-se o aprimoramento de prompting \textit{Zero-shot}.
+
+Inicialmente, realizou uma análise dos modelos disponiveis para o estudo e analisar como cada um respondeu as perguntas. Onde os modelos disponiveis foram: GPT-3.5, GPT-4, GPT-OSS, LLAMA-3.1-8b,  LLAMA3.1-8b-instant. LLAMA-3-70b e LLAMA-3.3-70b-versatile. Contudo, ao comparar os resultados obtidos entre os modelos da fámilia LLAMA, recebemos os seguintes resutlados demostrado na tabela \ref{tab:metricas_modelos_llama}
+
+\begin{table}[h]
+\centering
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Modelos} & \textbf{BERTSCORE} & \textbf{BARTSCORE} & \textbf{GPTSCORE} & \textbf{BLEU} & \textbf{ROUGE-1} \\
+\midrule
+
+LLAMA-3-8b               & 0.70 (0.03) & -3.32 (0.38) & -1.34 (0.16) & 0.26 (0.08)  & 0.27 (0.09) \\
+
+LLAMA-3.1-8b-instant     & 0.70 (0.03) & -3.31 (0.40) & -1.45 (0.15) & 0.26 (0.08) & 0.27 (0.09) \\
+
+LLAMA3-70b               & 0.70 (0.03) & -3.28 (0.38) & -0.94 (2.22) & 0.27 (0.08) &  0.29 (0.10) \\
+
+LLAMA-3.3-70b-versatile  & 0.70 (0.03) & -3.23 (0.37) & -1.05 (2.30) & 0.27 (0.08) & 0.27 (0.10) \\
+
+\bottomrule
+
+\end{tabular}}
+\caption{Comparação de métricas entre modelos LLAMA}
+\label{tab:metricas_modelos_llama}
+\end{table}
+
+Ao verificar as diferenças entre os modelos LLAMA-3-8b e LLAMA-3.1-8b-instant, a que mais se destaca é o tamanho da janela de contexto, isto é, na quantidade máxima de informações que o modelo consegue processar em uma operação. Enquanto, o LLAMA-3-8b tem tamanho de 8K e a versão \textit{instant} é de 128K, o mesmo acontence para o LLAMA-3-70B e LLAMA-3.3-70b-versatile. No caso de tentarem responder a mesma pergunta, percebe que os valores de sua métrica são muito similares, o qual resultou na remoção dos modelos com maior janela de contexto, devido não terem apresentado um ganho significativo para essa tarefa.
+
+Assim, os principais modelos selecionados foram: GPT-3.5-Turbo, GPT-4, GPT-OSS:20b LLAMA-3:8b e LLAMA-3:70b. Os resultados das métricas obtidas estão consolidados na Tabela \ref{tab:metricas_modelos}.
+
+\begin{table}[H]
+\centering
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Modelos} & \textbf{BERTSCORE} & \textbf{BARTSCORE} & \textbf{GPTSCORE} & \textbf{BLEU} & \textbf{ROUGE-1} \\
+\midrule
+   
+    ZERO SHOT + GPT-4             & \textbf{0.71 (0.04)} & \textbf{-3.21 (0.42)} & -1.45 (0.15) & \textbf{0.30 (0.09)} &  \textbf{0.33 (0.09)} \\
+    ZERO SHOT + GPT-3.5 Turbo     & 0.70 (0.05) & -3.22 (0.35) & \textbf{-1.36 (0.14)} & 0.28 (0.12) & 0.30 (0.16) \\
+    ZERO SHOT + GPT-OSS :20b      & 0.68 (0.03) & -3.39 (0.31) & -1.58 (0.36) & 0.158 (0.05) &  0.15 (0.08) \\
+    ZERO SHOT + LLAMA-3:8b        & 0.70 (0.03) & -3.31 (0.40) & -1.34 (0.16) & 0.26 (0.08) & 0.27 (0.09) \\
+    ZERO SHOT + LLAMA-3:70b       & 0.70 (0.03) & -3.23 (0.37) & -0.94 (2.22) & 0.27 (0.08) & 0.27 (0.10) \\
+
+    LIGHT RAG + GPT-OSS:20b       & 0.69 (0.07) & -3.52 (0.42) & -1.54 (0.13) & 0.22 (0.09) & 0.26 (0.09) \\
+    LIGHT RAG + LLAMA-3:8b       & 0.66 (0.08) & -3.44 (0.42) & -1.37 (0.24) & 0.09 (0.13) & 0.24 (0.10) \\
+
+    G-LIVE-RAG + GPT-4            & 0.65 (0.06) & -3.57 (0.57) & -1.36 (0.14) & 0.04 (0.11) & 0.11 (0.09) \\
+    G-LIVE-RAG + LLAMA-3:8b      & 0.65 (0.06) & -3.59 (0.41) & -1.58 (0.17) & 0.09 (0.11) & 0.26 (0.09) \\
+    G-LIVE-RAG + GPT-OSS:20b      & 0.64 (0.12) & -3.61 (0.65) & -1.50 (0.24) & 0.00 (0.11) & 0.19 (0.09) \\
+    
+
+\bottomrule
+\end{tabular}}
+\caption{Comparação de métricas entre modelos Base}
+\label{tab:metricas_modelos}
+\end{table}
+
+
+A Tabela \ref{tab:metricas_modelos} apresenta os valores médios obtidos em cada métrica, juntamente com seus respectivos desvios padrão, permitindo observar o desempenho de cada modelo em diferentes aspectos da qualidade textual das respostas geradas.
+
+Com o objetivo de sintetizar o desempenho geral considerando simultaneamente todas as métricas avaliadas, foi elaborado um ranqueamento baseado na média da posição obtida por cada modelo. Inicialmente, cada modelo recebeu uma posição em cada métrica analisada. Em seguida, foi calculada a média dessas posições, permitindo identificar quais modelos apresentaram melhor desempenho global.
+
+O resultado desse procedimento é apresentado na Tabela \ref{tab:rank_models}.
+\begin{table}[H]
+\centering
+
+\begin{tabular}{lcc}
+\toprule
+\textbf{Posição} & \textbf{Modelos} & \textbf{Média Geral} \\
+\midrule
+   
+     1º     &   ZERO SHOT + GPT-4             & 2.00   \\
+     1º     &   ZERO SHOT + GPT-3.5 Turbo     & 2.00   \\
+     3º     &   ZERO SHOT + LLAMA-3-70b       & 2.40   \\
+     4º     &   ZERO SHOT + LLAMA-3.1-8b      & 3.20   \\
+     
+     5º     &   LIGHT RAG + GPT-OSS:20b       & 5.60   \\
+
+     6º     &   ZERO SHOT + GPT-OSS:20b       & 6.00   \\
+     7º     &   LIGHT RAG + LLAMA-3:8b        & 6.20   \\
+    
+     8º     &   G-LIVE-RAG + GPT-4            & 6.60   \\
+     9º     &   G-LIVE-RAG + LLAMA3.1 8b      & 7.00   \\
+    10º     &   G-LIVE-RAG + GPT-OSS:20b      & 7.80   \\
+
+\bottomrule
+\end{tabular}
+\caption{Ranqueamento entre os modelos}
+\label{tab:rank_models}
+\end{table}
+
+A partir da média das posições obtidas nas métricas avaliadas, foi possível identificar os modelos com melhor desempenho geral. Observa-se que as configurações \textit{Zero-shot + GPT-4} e \textit{Zero-shot + GPT-3.5 Turbo} apresentaram as melhores médias de ranking, indicando resultados muito próximos entre si nas métricas analisadas.
+
+Dado os resultados apresentados na Tabela \ref{tab:metricas_modelos} e na Tabela \ref{tab:rank_models}, o modelo GPT-4 obteve desempenho superior na maioria das métricas de avaliação de similaridade semântica em relação aos outros modelos base com aplicação de \textit{Zero-shot}. No BERTScore, alcançou pontuação média de 0.71, enquanto no BARTScore apresentou valor de -3.21, evidenciando maior proximidade semântica com o texto de referência, uma vez que valores menos negativos indicam maior similaridade. Esses resultados mostram que o GPT-4 foi consistente em gerar respostas semanticamente próximas aos textos de referência analisados. 
+
+Entretanto, ao considerar a métrica GPTScore, o qual avalia a coerência semântica da resposta em relação à tarefa e ao aspecto de avaliação definido, o GPT-4 apresentou desempenho inferior aos demais modelos. Isso indica que, embora suas respostas sejam semanticamente similares, não se alinharam de forma satisfatória ao critério de correção factual adotado. Diferentemente de métricas como BERTScore e BARTScore, que medem apenas similaridade semântica entre textos, o GPTScore se baseia na aderência factual às respostas de referência, revelando limitações do GPT-4 nesse aspecto específico.
+
+Nas métricas de similaridade léxica, o GPT-4 também se destacou: obteve 0.30 no BLEU e 0.33 no ROUGE. Apesar de os valores absolutos serem baixos, o modelo superou os demais, evidenciando maior sobreposição léxica entre a resposta gerada e o texto de referência, o que indica melhor desempenho relativo na tarefa.
+
+Ainda assim, observa-se que os valores obtidos permanecem relativamente baixos. Isso demonstra que, na problemática proposta de avaliar se as respostas geradas mantêm o mesmo teor informativo da referência, há espaço significativo para aprimoramento, reforçando a necessidade de adaptação por meio de técnicas como RAG.
+
+
+
+% ====
+ % Explicação do RAG:
+% =======
+
+A análise isolada das métricas quantitativas na tabela \ref{tab:metricas_modelos} sugere uma redução de desempenho nas arquiteturas de RAG em comparação ao modelo base com aplicação do \textit{Zero-shot}. No entanto, uma avaliação qualitativa e manual das saídas revela um cenário distinto. Ao contrastarmos as respostas para a questão de exemplo usada a seguir, podemos observar os comportamentos divergentes que justificam a oscilação dos índices automáticos, conforme detalhado na Tabela \ref{tab:exemplo_respostas}.
+
+\begin{itemize}
+    \item{Exemplo}: Quais as características de uma boa instalação para bezerros?
+    
+    \item{Resposta Ouro}: Deve ser de baixo custo, oferecer conforto para os animais e facilitar o manejo. Acredita-se que um dos principais fatores relacionados à alta taxa de mortalidade de bezerros jovens seja o uso de instalações inadequadas. E certos tipos de instalação exigem muita mão de obra, dificultando a execução das tarefas de rotina. É importante salientar que há a opção de utilização de abrigos individuais, que estão substituindo o bezerreiro, principalmente, pela facilidade de manutenção de ambiente sombreado, seco e limpo, e pela possibilidade de ser mudado de local. Além disso, permite o fornecimento individual de leite, volumoso, concentrado e água.
+\end{itemize}
+
+Resposta Geradas para a pergunta:
+\begin{table}[H]
+    \centering
+
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{p{4cm} | p{12cm}} % Definido o tamanho para evitar erros de renderização
+            \toprule
+            \textbf{Modelo} & \textbf{Resposta Gerada} \\
+            \midrule
+            
+            \textbf{ZERO SHOT + LLAMA 3:70b} & Excelente pergunta! Uma boa instalação para bezerros é fundamental para o desenvolvimento saudável e rápido dos animais. Aqui estão as características essenciais: \begin{itemize} \item \textbf{Localização:} Área segura e protegida; \item \textbf{Espaço:} Densidade de 2,5 a 3 $m^2$ por animal; \item \textbf{Ventilação:} Altura mínima de 3m entre chão e teto; \item \textbf{Iluminação:} Natural e complementar (florescentes); \item \textbf{Climatização:} Sistema de aquecimento e resfriamento (15°C a 20°C). \end{itemize} \\
+            
+            \midrule
+            
+            \textbf{LIGHT RAG + LLAMA 3:70b} & A escolha entre um bezerreiro de alvenaria e um de madeira deve considerar fatores como estabilidade e custo. \\ & \textbf{Alvenaria:} Alta estabilidade, fácil limpeza (pode ser lavada) e baixa manutenção. \\ & \textbf{Madeira:} Custo de construção baixo, mas manutenção cara e frequente, com dificuldade de higienização por absorver umidade. \\
+            
+            \midrule
+            
+            \textbf{G-LiveRAG + LLAMA 3:70b} & Uma boa instalação deve garantir visibilidade, espaço para movimentação e manutenção rigorosa da higiene. \newline \newline \textit{Nota do Modelo:} No entanto, a pergunta não está diretamente relacionada aos documentos fornecidos (focados em análise de Colostro Bovino). O modelo utilizou conhecimento prévio para responder. \\
+            
+            \bottomrule
+        \end{tabular}
+        }
+            \caption{Exemplos de perguntas e respostas de referência em comparação com as respostas geradas pelos modelos.}
+    \label{tab:exemplo_respostas}
+\end{table}
+
+
+O modelo \textit{Zero-Shot} + LLAMA-3:70B gera uma resposta baseada estritamente em seu conhecimento prévio, aquirido durante o seu treinamento. Embora estruturada, a resposta apresenta a falta de especificidade técnica voltada à realidade da pecuária bovina, listando itens que podem ser considerados excessivos ou de difícil implementação prática para o manejo sugerido pelo referencial da Embrapa.
+
+Em contrapartida, o LightRAG + LLAMA-3:70B demonstra uma transição para um caráter consultivo na geração dessa resposta. A resposta é direcionada à resolução do problema, oferecendo opções de materiais e avaliando fatores como orçamento e facilidade de higienização. Esta abordagem aproxima-se da utilidade esperada de um assistente especializado, mesmo que a divergência vocabular em relação à "Resposta Ouro" penalize as métricas de similaridade léxica.
+
+Quanto ao G-LiveRAG + LLAMA-3:70B, observa o impacto positivo da técnica de aprimoramento de prompt. O sistema conseguiu expandir a consulta original, gerando uma resposta com estrutura similar à de referência. Contudo, o sistema explicitou uma limitação crítica: a ausência de informações pertinentes no corpus documental fornecido. Os documentos indexados, com foco na análise química de colostro bovino, não continham o contexto necessário sobre instalações físicas.
+
+Este achado é determinante para a interpretação dos resultados: a eficácia de um sistema RAG é estritamente limitada pela relevância e abrangência da sua base de dados. A inferioridade das métricas de RAG em relação ao modelo base com \textit{Zero-shot} não decorre de uma falha na arquitetura, mas de uma "lacuna informacional" entre as perguntas do livro de referência e o conteúdo técnico dos artigos científicos selecionados \cite{GONTIJO2025101097}. Consequentemente, o modelo acaba por recorrer ao seu conhecimento interno, enquanto o processo de recuperação de documentos não relacionados introduz ruídos que reduzem a precisão semântica calculada pelas métricas automáticas.
+
+\section{Impacto da Engenharia de Prompt}
+A qualidade da consulta enviada ao recuperador é um fator determinante para a eficácia do sistema G-LiveRAG. Prompts com baixo contexto frequentemente resultam em recuperações imprecisas, uma vez que a consulta original pode carecer de termos técnicos presentes nos documentos de domínio. A técnica de aprimoramento busca mitigar essa lacuna através da reformulação da consulta e do direcionamento da instrução do sistema.
+
+O G-LiveRAG utiliza instruções específicas para balizar a geração, focando em respostas objetivas fundamentadas nos documentos fornecidos. Essa abordagem visa aumentar a confiabilidade do sistema ao permitir a checagem de veracidade dos fatos. Os níveis de complexidade de instrução avaliados são:
+
+\begin{itemize}
+    \item{Simples}: Um \textit{prompt} simples que define uma persona para o modelo e define que a resposta deve  ser baseadas nos documentos recuperados.
+    
+    \item{Médio}: Esse \textit{Prompt} é mais restritivo, onde limita a resposta apenas ao conteúdo dos documentos, caso não tenha contexto suficiente para responder retorna "Eu não sei".
+    
+    \item{Avançado}: Mais restritivo que o \textit{prompt} anterior, agora o modelo está mais limitado, sendo proibido de agregar qualquer conhecimento externo ou inferir qualquer detalhe dado o contexto retornado e tem que prover uma resposta mais conscisa seguindo a pergunta realizada e as informações extraidas dos documentos.
+    
+    \item{Customizado}: A versão customizada une a versatilidade do prompt Simples ao definir uma persona especializada no domínio da pecuária leiteira, com o rigor do prompt Avançado. Ele estabelece uma hierarquia de fontes onde o contexto recuperado é a prioridade absoluta, mas permite a expansão técnica baseada em conhecimento científico consolidado caso os documentos sejam insuficientes, desde que essa distinção seja explicitamente sinalizada na resposta.
+\end{itemize} 
+
+
+ Os prompt utilizados estão detalhados na Tabela \ref{tab:g_live_rag_prompts_instrucao}.
+
+\begin{table}[H]
+\centering
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l p{14cm}} % p{} permite quebra de linha automática
+\toprule
+\textbf{Variações de Prompt} & \textbf{Prompt de Instrução (JSON Structure)} \\
+\midrule
+
+Simples & \texttt{\{ "system\_prompt": "You are a helpful assistant. Answer the question based on the provided documents.", "primary\_prompt": "Documents: \textbackslash n\textbackslash n\{context\}\textbackslash n\textbackslash nQuestion: \{question\}\textbackslash n\textbackslash nAnswer: " \}} \\ 
+
+\midrule
+
+Médio & \texttt{\{ "system\_prompt": "You are given a question and you MUST respond by EXTRACTING the answer from provided documents. If none of the documents contain the answer, respond with *'I don't know'*.", "primary\_prompt": "Documents:\textbackslash n\textbackslash n\{context\}\textbackslash n\textbackslash n*Question: \{question\}* \textbackslash n Answer: " \}} \\ 
+
+\midrule
+
+Avançado & \texttt{\{ "system\_prompt": "You must respond based strictly on the information in provided passages. Do not incorporate any external knowledge or infer any details beyond what is given in the passages.", "primary\_prompt": "Provide a concise answer to the following question based on the information in the provided documents. Documents:\textbackslash n\textbackslash n\{context\}\textbackslash n\textbackslash n*Question: \{question\}*\textbackslash nAnswer: " \}} \\ 
+
+\midrule
+
+Customizado & \texttt{\{ "system\_prompt": "Você é um Consultor Sênior em Pecuária Leiteira. Sua abordagem combina a análise rigorosa dos documentos fornecidos com o conhecimento científico consolidado da zootecnia. Seu objetivo é fornecer a resposta mais completa e prática possível. Se os documentos forem insuficientes, você deve expandir a explicação usando sua base de conhecimento, sinalizando quando estiver trazendo boas práticas externas ao texto.", "primary\_prompt": "Utilize o contexto em \{context\} como base principal para responder à pergunta: \{question\}. ### Instruções de Composição: 1. \textbf{Prioridade de Contexto:} Inicie a resposta utilizando os dados e recomendações presentes nos documentos fornecidos. 2. \textbf{Expansão Técnica:} Caso os documentos não cubram todos os aspectos da pergunta, utilize seus conhecimentos em manejo, nutrição e sanidade animal para complementar a resposta. 3. \textbf{Clareza de Fontes:} Diferencie o que é recomendação direta dos documentos e o que é prática geral da zootecnia. 4. \textbf{Formatação:} Organize a explicação de forma técnica e clara. Resposta Consultiva:" \}} \\
+
+\bottomrule
+\end{tabular}
+}
+\caption{Definição de Variações de Prompts de Instrução por Nível de Complexidade}
+\label{tab:g_live_rag_prompts_instrucao}
+\end{table}
+
+
+Conforme observado, as variações Médio e Avançado possuem um caráter estritamente restritivo. Elas limitam a resposta ao contexto extraído, inibindo o uso do conhecimento prévio (\textit{parametric memory}) do modelo e substituindo possíveis incertezas pela cláusula de salvaguarda "Eu não sei". Embora essa rigidez reduza a taxa de alucinação, ela torna o sistema extremamente dependente da clareza da consulta e da riqueza da base de documentos. Caso haja ambiguidade em qualquer um desses pontos, a resposta tende a ser inconclusiva.
+
+Os impactos dessas diferentes abordagens de instrução nas métricas de desempenho estão consolidados na Tabela \ref{tab:g_live_rag_metrica_aprimoramento_de_prompt}.
+
+% TABELA COM A COMPARAÇÃO ENTRE OS RESULTADOS de NAIVE _ MEDIUM _ ADVANCED _ CUSTOM
+
+\begin{table}[h]
+\centering
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Prompt de Geração de Consulta} & \textbf{BERTSCORE} & \textbf{BARTSCORE} & \textbf{GPTSCORE} & \textbf{BLEU} & \textbf{ROUGE-1} \\
+\midrule
+
+Simples      & 0.65 (0.05) & -3.58 (0.41) & -1.85 (0.24) &  0.09 (0.11)     & 2.19E-01 (0.07) \\
+Médio        & 0.33 (0.14) & -5.17 (0.84) & -2.04 (0.26) &  6.73E-78 (0.07) & 2.82E-02 (0.08) \\
+Avançado     & 0.56 (0.12) & -3.87 (0.78) & -2.23 (0.35) &  2.71E-78 (0.06) & 0.11 (0.89) \\
+Customizado  & 0.67 (0.03) & -3.59 (0.35) & -1.47 (0.11) &  0.18 (0.10)     & 0.24 (0.08)\\
+
+\bottomrule
+\end{tabular}}
+\caption{Comparação de métricas em relação ao nivel de prompt de instrução}
+\label{tab:g_live_rag_metrica_aprimoramento_de_prompt}
+\end{table}
+
+
+\subsection{Análise dos Resultados}
+A análise dos dados revela que o nível Customizado obteve o melhor equilíbrio entre similaridade semântica e fidelidade léxica. Enquanto os níveis Médio e Avançado sofreram uma degradação severa nas métricas (com valores de BLEU e ROUGE-1 próximos a zero devido à recusa do modelo em responder na ausência de correspondência exata), o prompt Customizado agiu como um mecanismo de "compensação semântica".
+
+Ao definir uma persona de consultor e permitir a expansão técnica baseada em conhecimento consolidado da zootecnia, o sistema contornou as limitações de uma base documental reduzida. Esse enriquecimento prova que, para modelos de menor escala, a flexibilização controlada da instrução, priorizando o contexto, mas permitindo a fundamentação técnica externa, é o caminho mais viável para manter a utilidade prática do sistema sem comprometer a autoridade do conteúdo.
+

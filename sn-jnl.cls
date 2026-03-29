@@ -1,0 +1,1 @@
+template/sn-jnl.cls
